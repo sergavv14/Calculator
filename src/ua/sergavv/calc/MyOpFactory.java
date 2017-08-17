@@ -1,4 +1,7 @@
 package ua.sergavv.calc;
+import ua.sergavv.calc.operations.*;
+import ua.sergavv.calc.operations.impl.*;
+
 
 public class MyOpFactory implements OperationFactory {
     @Override
@@ -20,7 +23,12 @@ public class MyOpFactory implements OperationFactory {
 
                 Operation oper3 = new OpDiv();
                 return oper3;
-                //break;
+                //
+            case "nod":
+
+                Operation oper4 = new OpNod();
+                return oper4;
+            //break;
 
             default:
                 return null;
