@@ -9,7 +9,7 @@ public class OpNod implements Operation {
         long nod = 1L;
         ClassNod.a = (long) a1;
         ClassNod.b = (long) b1;
-        ClassNod.Nod();
+        ClassNod.calculateNod();
         return ClassNod.nod;
     }
 
@@ -18,7 +18,7 @@ public class OpNod implements Operation {
         static long a;
         static long b;
 
-        public static void Nod(){
+        public static void calculateNod(){
             if (a > b) {
                 long tmp = a;
                 a = b;
