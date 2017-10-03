@@ -1,8 +1,7 @@
-package ua.sergavv.calc.operations.impl;
+package calc.operations.impl;
 
-import ua.sergavv.calc.operations.Operation;
+import calc.operations.Operation;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 

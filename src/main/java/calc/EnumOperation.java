@@ -1,6 +1,4 @@
-package ua.sergavv.calc;
-
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+package calc;
 
 public enum EnumOperation {
     ADD,   //Addition
