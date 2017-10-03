@@ -1,6 +1,6 @@
-package ua.sergavv.calc.operations.impl;
+package calc.operations.impl;
 
-import ua.sergavv.calc.operations.Operation;
+import calc.operations.Operation;
 
 public class OpMul implements Operation {
     @Override
