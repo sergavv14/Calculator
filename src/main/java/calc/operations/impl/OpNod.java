@@ -1,8 +1,10 @@
 package calc.operations.impl;
 
+import calc.operations.EnumOperation;
 import calc.operations.Operation;
 
 public class OpNod implements Operation {
+    public final EnumOperation enumOperation = EnumOperation.NOD;
 
     @Override
     public double exec(double a1, double b1) {
@@ -11,6 +13,11 @@ public class OpNod implements Operation {
         ClassNod.b = (long) b1;
         ClassNod.calculateNod();
         return ClassNod.nod;
+    }
+
+    @Override
+    public EnumOperation getEnumOperation() {
+        return enumOperation;
     }
 
     public static class ClassNod{

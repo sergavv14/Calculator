@@ -1,5 +1,8 @@
 package calc;
 
+import calc.reader.DataReader;
+import calc.reader.ReadFromConsole;
+import calc.reader.ReadFromFile;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -11,6 +14,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import calc.factory.MyOpFactory;
 import calc.operations.Operation;
+
+import java.util.Scanner;
 
 public final class Main extends Application {
 
@@ -90,7 +95,46 @@ public final class Main extends Application {
 		}
 	}
 
+
+	// STATIC MAIN
 	public static void main(String args[]) {
-		launch(args);
+		Scanner scanner = new Scanner(System.in);
+		Boolean isExit = false;
+
+		while (!isExit) {
+		    System.out.println("");
+			System.out.println("Меню:");
+			System.out.println("1 - Калькулятор с интерфейсом;");
+			System.out.println("2 - Калькулятор ввод аргументов с консоли;");
+			System.out.println("3 - Калькулятор ввод аргументов с файла(запись результата в этот же файл);");
+			System.out.println("0 - Выход;");
+            System.out.println("--------------------------------");
+
+			String next = scanner.next();
+			int choice = Integer.parseInt(next);
+			switch (choice){
+				case 0:{
+					isExit = true;
+					System.out.println("!!! STOP !!!");
+					break;
+				}
+				case 1:{
+					launch(args);
+					break;
+				}
+				case 2:{
+					DataReader dataReader = new ReadFromConsole();
+					dataReader.run();
+					break;
+				}
+				case 3:{
+					DataReader dataReader = new ReadFromFile();
+					dataReader.run();
+					break;
+				}
+			}
+
+		}
+
 	}
 }

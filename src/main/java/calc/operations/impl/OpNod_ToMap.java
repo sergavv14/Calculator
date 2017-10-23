@@ -1,11 +1,13 @@
 package calc.operations.impl;
 
+import calc.operations.EnumOperation;
 import calc.operations.Operation;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class OpNod_ToMap implements Operation {
+    public final EnumOperation enumOperation = EnumOperation.NOD_MAP;
 
     @Override
     public double exec(double a1, double b1) {
@@ -14,6 +16,11 @@ public class OpNod_ToMap implements Operation {
         obj.b = (long) b1;
         obj.calculateNod();
         return obj.nod;
+    }
+
+    @Override
+    public EnumOperation getEnumOperation() {
+        return enumOperation;
     }
 
     public class ClassNod{
