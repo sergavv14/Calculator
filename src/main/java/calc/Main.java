@@ -144,7 +144,7 @@ public final class Main extends Application {
 				}
 				case 3:{
 					statisticsKeeper.putStatus("Нажата кнопка 3 - Калькулятор ввод аргументов с файла(запись результата в этот же файл)");
-					DataReader dataReader = new ReadFromFile("testfile.txt");
+					DataReader dataReader = new ReadFromFile("testfile.txt"); //"C:\\GitHub\\Calculator\\src\\main\\java\\calc\\myfile.txt"
 					dataReader.run();
 					statisticsKeeper.putStatus("Вычисления прошли успешно !!!");
 					break;
