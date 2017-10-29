@@ -1,23 +1,83 @@
 package calc.reader;
 
+import calc.MyError.My_IllegalArgumentException;
+
 import java.io.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
 
 public class ReadFromFile extends DataReader {
-    protected LinkedList<String> linkedListIn;
-    protected LinkedList<String> linkedListOut;
+
+    private String path;
+    private RandomAccessFile file;
+
+    public ReadFromFile(String path) {
+        this.path = path;
+    }
+
+
+    // этот метод читает файл и выводит его содержимое
+    public String read() throws IOException {
+        file = new RandomAccessFile(path, "r");
+        String res = "";
+        int b = file.read();
+        // побитово читаем символы и плюсуем их в строку
+        while (b != -1) {
+            res = res + (char) b;
+            b = file.read();
+        }
+        file.close();
+
+        return res;
+    }
+
+    // запись в файл
+    public void write(String st) throws IOException {
+        // открываем файл для записи
+        // для этого указываем модификатор rw (read & write)
+        // что позволит открыть файл и записать его
+        file = new RandomAccessFile(path, "rw");
+
+        // записываем строку переведенную в биты
+        file.write(st.getBytes());
+
+        // закрываем файл, после чего данные записываемые данные попадут в файл
+        file.close();
+    }
 
     @Override
-    public void run(){
-        String nameFile = "C:\\GitHub\\Calculator\\src\\main\\java\\calc\\myfile.txt";
-        linkedListIn  = readFileInLinkedList(nameFile);
+    public String printResult() throws My_IllegalArgumentException {
+        super.printResult();
+        return " "+String.valueOf(resultOperation) + ";";
+    }
 
-        linkedListOut = new LinkedList<String>();
-        for (String strLine: linkedListIn) {
+    @Override
+    public void run() {
+
+        String allText = "";
+        try {
+            allText = read();
+        } catch (IOException e) {
+            System.out.println(e.toString());
+        }
+
+        StringBuilder stringBuilder = new StringBuilder(allText);
+
+        int indexStart = 0;
+        int indexEnd = stringBuilder.indexOf("=");
+        while (indexEnd!=-1){
+            String strResult = "";
+
+            String strLine = stringBuilder.substring(indexStart, indexEnd);
+            int indexLine = strLine.indexOf('\n');
+            if (indexLine!=-1) strLine = strLine.substring(indexLine);
+            strLine = strLine.replace('\r',' ');
+            strLine = strLine.replace('\n',' ');
+            strLine = strLine.trim();
+
             String [] argsStr = strLine.split(" ");
-            String strOut = "";
             if (argsStr.length==3){
                 try {
                     readFirstNumber(argsStr[0]);
@@ -25,73 +85,28 @@ public class ReadFromFile extends DataReader {
                     readSecondNumber(argsStr[2]);
 
                     getResult();
-                    strOut = printResult();
-                } catch (IllegalArgumentException | NullPointerException e){
-                    strOut = strLine.concat(" " + e.toString());
-                    System.out.println(strOut);
-                } catch (Exception e){
+                    strResult = printResult();
+                } catch (My_IllegalArgumentException e){
+                    strResult = e.toString();
                     System.out.println(e.toString());
                 }
 
             }
             else{
-                strOut = strLine.concat(" ОШИБКА! Укажите правильно все аргументы! Пример: 17.2 + 4.3");
-                System.out.println(strOut);
+                strResult = " ОШИБКА! Укажите правильно все аргументы! Пример:(17.2 + 4.3 =)";
+                System.out.println(strResult);
             }
 
-            linkedListOut.add(strOut);
+            stringBuilder.insert(indexEnd+1, strResult);
+            indexStart = indexEnd+1+strResult.length();
+            indexEnd = stringBuilder.indexOf("=", indexStart);
         }
 
-        writeFileFromLinketList(nameFile, linkedListOut);
-
-    }
-
-    public LinkedList<String> readFileInLinkedList(String nameFile){
-        LinkedList<String> newListFile = new LinkedList<String>();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(nameFile))) {
-
-            String contentLine = br.readLine();
-            while (contentLine != null) {
-                newListFile.add(contentLine);
-                contentLine = br.readLine();
-            }
-
-        }
-        catch (IOException ioe) {
-            ioe.printStackTrace();
+        try {
+            write(stringBuilder.toString());
+        } catch (IOException e) {
+            System.out.println(e.toString());
         }
 
-        return newListFile;
-    }
-
-    public void  writeFileFromLinketList(String nameFile, List<String> linketList) {
-
-        BufferedWriter bw = null;
-        try{
-            File file = new File(nameFile);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
-
-            bw = new BufferedWriter(new FileWriter(file));
-            for (String strLine: linketList){
-                bw.write(strLine);
-                bw.newLine();
-            }
-
-            bw.flush();
-            System.out.println("File written Successfully");
-
-        }catch (IOException ioe){
-            ioe.printStackTrace();
-        } finally {
-            try {
-                if (bw != null)
-                    bw.close();
-            } catch (Exception ex) {
-                System.out.println("Error in closing the BufferedWriter" + ex);
-            }
-        }
     }
 }

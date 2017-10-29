@@ -1,5 +1,7 @@
 package calc.reader;
 
+import calc.MyError.My_IllegalArgumentException;
+
 import java.util.Scanner;
 
 
@@ -12,7 +14,7 @@ public class ReadFromConsole extends DataReader {
             try {
                 readFirstNumber(scanner.next());
                 break;
-            } catch (IllegalArgumentException e) {
+            } catch (My_IllegalArgumentException e) {
                 System.out.println(e.toString());
                 continue;
             }
@@ -26,7 +28,7 @@ public class ReadFromConsole extends DataReader {
             try {
                 readSecondNumber(scanner.next());
                 break;
-            } catch (IllegalArgumentException e) {
+            } catch (My_IllegalArgumentException e) {
                 System.out.println(e.toString());
                 continue;
             }
@@ -39,7 +41,7 @@ public class ReadFromConsole extends DataReader {
             try {
                 readOperation(scanner.next());
                 break;
-            } catch (IllegalArgumentException e) {
+            } catch (My_IllegalArgumentException e) {
                 System.out.println(e.toString());
                 continue;
             }
@@ -52,8 +54,12 @@ public class ReadFromConsole extends DataReader {
         readOperation();
         readSecondNumber();
 
-        getResult();
-        printResult();
+        try {
+            getResult();
+            printResult();
+        } catch (My_IllegalArgumentException e) {
+            System.out.println(e.toString());
+        }
 
 
     }

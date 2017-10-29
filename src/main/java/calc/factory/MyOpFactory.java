@@ -8,10 +8,7 @@ import calc.operations.impl.*;
 public class MyOpFactory implements OperationFactory {
 
     @Override
-    public Operation getOplnstance(String op) throws IllegalArgumentException {
-
-        EnumOperation enumOp = EnumOperation.getEnumOperation(op);
-        if (enumOp==null) throw new IllegalArgumentException();
+    public Operation getOplnstance(EnumOperation enumOp) throws IllegalArgumentException {
 
         switch (enumOp){
             case ADD:

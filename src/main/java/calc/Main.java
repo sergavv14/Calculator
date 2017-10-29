@@ -1,5 +1,6 @@
 package calc;
 
+import calc.operations.EnumOperation;
 import calc.reader.DataReader;
 import calc.reader.ReadFromConsole;
 import calc.reader.ReadFromFile;
@@ -82,8 +83,14 @@ public final class Main extends Application {
 				display.setText("Ошибка! Укажите правильно все аргументы! Результат = 0");
 			}
 
+			EnumOperation enumOp = EnumOperation.getEnumOperation(selectedOperator);
+			if (enumOp==null) {
+				display.setText("Ошибка! Укажите правильно все аргументы! Результат = 0");
+				return;
+			}
+
 			MyOpFactory Factory = new MyOpFactory();
-			Operation Oper = Factory.getOplnstance(selectedOperator);
+			Operation Oper = Factory.getOplnstance(enumOp);
 			if (Oper == null) {
 				display.setText("Ошибка! Укажите правильно все аргументы! Результат = 0");
 				return;
@@ -101,6 +108,8 @@ public final class Main extends Application {
 		Scanner scanner = new Scanner(System.in);
 		Boolean isExit = false;
 
+		StatisticsKeeper statisticsKeeper = StatisticsKeeper.getInstance();
+
 		while (!isExit) {
 		    System.out.println("");
 			System.out.println("Меню:");
@@ -116,20 +125,28 @@ public final class Main extends Application {
 				case 0:{
 					isExit = true;
 					System.out.println("!!! STOP !!!");
+					statisticsKeeper.putStatus("Нажата кнопка 0 - Выход");
+					statisticsKeeper.closeConnection();
 					break;
 				}
 				case 1:{
+					statisticsKeeper.putStatus("Нажата кнопка 1 - Калькулятор с интерфейсом");
 					launch(args);
+					statisticsKeeper.putStatus("Вычисления прошли успешно !!!");
 					break;
 				}
 				case 2:{
+					statisticsKeeper.putStatus("Нажата кнопка 2 - Калькулятор ввод аргументов с консоли");
 					DataReader dataReader = new ReadFromConsole();
 					dataReader.run();
+					statisticsKeeper.putStatus("Вычисления прошли успешно !!!");
 					break;
 				}
 				case 3:{
-					DataReader dataReader = new ReadFromFile();
+					statisticsKeeper.putStatus("Нажата кнопка 3 - Калькулятор ввод аргументов с файла(запись результата в этот же файл)");
+					DataReader dataReader = new ReadFromFile("testfile.txt");
 					dataReader.run();
+					statisticsKeeper.putStatus("Вычисления прошли успешно !!!");
 					break;
 				}
 			}
