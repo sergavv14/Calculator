@@ -3,9 +3,7 @@ package calc.reader;
 import calc.MyError.My_IllegalArgumentException;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
+
 
 
 public class ReadFromFile extends DataReader {
@@ -68,7 +66,7 @@ public class ReadFromFile extends DataReader {
         int indexStart = 0;
         int indexEnd = stringBuilder.indexOf("=");
         while (indexEnd!=-1){
-            String strResult = "";
+            String strResult;
 
             String strLine = stringBuilder.substring(indexStart, indexEnd);
             int indexLine = strLine.indexOf('\n');
